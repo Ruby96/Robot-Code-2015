@@ -152,6 +152,10 @@ void check_heading(float heading) //using RPS
         {
             turn_left(50, 1);
         }
+        if (RPS.Heading() > 315 && heading == 0.)
+        {
+            turn_right(50,1);
+        }
         if (RPS.Heading() > heading)
         {
             turn_right(50, 1);
