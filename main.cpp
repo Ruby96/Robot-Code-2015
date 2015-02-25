@@ -8,9 +8,9 @@
 ButtonBoard buttons(FEHIO::Bank3);
 DigitalEncoder right_encoder(FEHIO::P0_0);
 DigitalEncoder left_encoder(FEHIO::P0_1);
+AnalogInputPin sensor(FEHIO::P1_0);
 FEHMotor right_motor(FEHMotor::Motor0);
 FEHMotor left_motor(FEHMotor::Motor1);
-AnalogInputPin cds(FEHIO::P0_2);
 
 void move_forward(int percent, int counts) //using encoders
 {
@@ -20,7 +20,7 @@ void move_forward(int percent, int counts) //using encoders
 
     //Set both motors to desired percent
     right_motor.SetPercent(percent);
-    left_motor.SetPercent(-1*percent);
+    left_motor.SetPercent(percent);
 
     //While the average of the left and right encoder are less than counts,
     //keep running motors
@@ -40,7 +40,7 @@ void turn_right(int percent, int counts) //using encoders
     //Set both motors to desired percent
     //hint: set right motor backwards, left motor forwards
     right_motor.SetPercent(-1*percent);
-    left_motor.SetPercent(-1*percent);
+    left_motor.SetPercent(percent);
 
 
     //While the average of the left and right encoder are less than counts,
@@ -60,7 +60,7 @@ void turn_left(int percent, int counts) //using encoders
 
     //Set both motors to desired percent
     right_motor.SetPercent(percent);
-    left_motor.SetPercent(percent);
+    left_motor.SetPercent(-1*percent);
 
 
     //While the average of the left and right encoder are less than counts,
@@ -78,6 +78,7 @@ void check_x_plus(float x_coordinate) //using RPS while robot is in the +x direc
     //check whether the robot is within an acceptable range
     while(RPS.X() < x_coordinate - 1 || RPS.X() > x_coordinate + 1)
     {
+         Sleep(100);
         LCD.WriteLine(RPS.X());
         if(RPS.X() > x_coordinate)
         {
@@ -89,7 +90,6 @@ void check_x_plus(float x_coordinate) //using RPS while robot is in the +x direc
             //pulse the motors for a short duration in the correct direction
             move_forward(50,1);
         }
-        Sleep(250);
     }
 }
 
@@ -97,19 +97,23 @@ void check_y_minus(float y_coordinate) //using RPS while robot is in the -y dire
 {
     //check whether the robot is within an acceptable range
     while(RPS.Y() < y_coordinate - 1 || RPS.Y() > y_coordinate + 1)
+
     {
+        Sleep(100);
+
         LCD.WriteLine(RPS.Y());
         if(RPS.Y() > y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             move_forward(50,1);
+            //<ADD CODE HERE>
         }
         else if(RPS.Y() < y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             move_forward(-50,1);
+            //<ADD CODE HERE>
         }
-        Sleep(250);
     }
 }
 
@@ -118,18 +122,20 @@ void check_y_plus(float y_coordinate) //using RPS while robot is in the +y direc
     //check whether the robot is within an acceptable range
     while(RPS.Y() < y_coordinate - 1 || RPS.Y() > y_coordinate + 1)
     {
+         Sleep(100);
         LCD.WriteLine(RPS.Y());
         if(RPS.Y() > y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             move_forward(-50,1);
+            //<ADD CODE HERE>
         }
         else if(RPS.Y() < y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             move_forward(50,1);
+            //<ADD CODE HERE>
         }
-        Sleep(250);
     }
 }
 
@@ -138,78 +144,86 @@ void check_heading(float heading) //using RPS
     //you will need to fill out this one yourself and take into account
     //the edge conditions (when you want the robot to go to 0 degrees
     //or close to 0 degrees)
-    if(heading >= 360)
+    while(RPS.Heading()< heading - 2 || RPS.Heading() > heading + 2)
     {
-        heading = heading-360;
-    }
-    while(RPS.Heading()< heading - 1 || RPS.Heading() > heading + 1)
-    {
+        Sleep(100);
         LCD.WriteLine(RPS.Heading());
         if (RPS.Heading() < heading)
         {
-            turn_right(50, 1);
-        }
-        if (RPS.Heading() > 315 && heading == 0.)
-        {
-            turn_right(50,1);
+            turn_left(50, 1);
         }
         if (RPS.Heading() > heading)
         {
-            turn_left(50, 1);
+            turn_right(50, 1);
         }
-        Sleep(250);
     }
 }
 
 int main(void)
 {
-    int motor_percent = 75; //Input power level here
-    int expected_counts = 34; //Input theoretical counts here
+    LCD.Write("print");
+    int motor_percent = 50; //Input power level here
+    int expected_counts = 275; //Input theoretical counts here
     float initial_heading = RPS.Heading();
-    if(initial_heading > 350 || initial_heading < 10)
-    {
-        initial_heading = 0;
-    }
-    else if (initial_heading < 100 && initial_heading > 80)
-    {
-        initial_heading = 90;
-    }
-    else if (initial_heading < 190 && initial_heading > 170)
-    {
-        initial_heading = 180;
-    }
-    else if (initial_heading < 280 && initial_heading > 260)
-    {
-        initial_heading = 270;
-    }
+
     //Initialize the screen (GO BUCKS!)
     LCD.Clear( FEHLCD::Scarlet );
     LCD.SetFontColor( FEHLCD::Gray );
     RPS.InitializeMenu();
 
-    LCD.WriteLine("Performance Test 1");
-    //while(cds.Value () > 0.15); //Wait for light to be seen
+    LCD.WriteLine("Waiting for button to be pressed");
+   while(!buttons.middleButtonPressed());
+   while(buttons.middleButtonPressed());
 
-    //check_heading(initial_heading);
-    move_forward(motor_percent, 472);
-    check_y_minus(16.5);
-    LCD.WriteLine(RPS.Y());
-    turn_left(motor_percent, 10*expected_counts);
-    check_heading(initial_heading+90);
-    LCD.WriteLine(RPS.Heading());
-    move_forward(motor_percent, 337);
-    check_x_plus(28.099);
-    LCD.WriteLine(RPS.X());
-    turn_left(motor_percent, 110);
-    check_heading(initial_heading+180);
-    LCD.WriteLine(RPS.Heading());
-    move_forward(motor_percent, 135);
-    check_y_plus(20.599);
-    LCD.WriteLine(RPS.Y());
-    //move_forward(percent,      );
-    //check_y_plus(    ,    );
-    //move_forward(percent,      );
-    left_motor.Stop();
-    right_motor.Stop();
-    return 0;
+    LCD.WriteLine("Waiting for light");
+    while(sensor.Value() > 0.5);
+
+    Sleep(100);
+    move_forward(motor_percent, 283);
+    Sleep(250);
+    //check_y_minus(18.599);
+    Sleep(250);
+    //check_heading(180);
+    Sleep(250);
+
+    turn_left(motor_percent,250);
+    Sleep(250);
+   // check_heading(270);
+    Sleep(250);
+
+    move_forward(motor_percent, 317);
+    Sleep(250);
+    //check_x_plus(30.099);
+    Sleep(250);
+    //check_heading(270);
+    Sleep(250);
+
+    turn_left(50, 250);
+    Sleep(250);
+    //check_heading(0);
+    Sleep(250);
+
+   // move_forward(motor_percent,63);
+    Sleep(250);
+    //check_y_plus(23);
+    Sleep(250);
+    //check_heading(180);
+
+    // move_foward(motor_percent, TOP_OF_SLOPE_DISTANCE);
+    // Sleep(250);
+    // check_y_plus(TOP_OF_SLOPE_POSITION);
+    // Sleep(250);
+    // check_heading(180);
+
+    // move_foward(motor_percent, HALFWAY_DISTANCE);
+    // Sleep(250);
+    // check_y_plus(HALFWAY_POSITION);
+    // Sleep(250);
+    // check_heading(180);
+
+        // move_foward(motor_percent, PENTAWHEEL_DISTANCE);
+    // Sleep(250);
+    // check_y_plus(PENTAWHEEL_POSITION);
+
+
 }
