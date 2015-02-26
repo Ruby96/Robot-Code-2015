@@ -20,7 +20,7 @@ void move_forward(int percent, int counts) //using encoders
 
     //Set both motors to desired percent
     right_motor.SetPercent(percent);
-    left_motor.SetPercent(percent);
+    left_motor.SetPercent(-1*percent);
 
     //While the average of the left and right encoder are less than counts,
     //keep running motors
@@ -40,7 +40,7 @@ void turn_right(int percent, int counts) //using encoders
     //Set both motors to desired percent
     //hint: set right motor backwards, left motor forwards
     right_motor.SetPercent(-1*percent);
-    left_motor.SetPercent(percent);
+    left_motor.SetPercent(-1*percent);
 
 
     //While the average of the left and right encoder are less than counts,
@@ -60,7 +60,7 @@ void turn_left(int percent, int counts) //using encoders
 
     //Set both motors to desired percent
     right_motor.SetPercent(percent);
-    left_motor.SetPercent(-1*percent);
+    left_motor.SetPercent(percent);
 
 
     //While the average of the left and right encoder are less than counts,
@@ -144,21 +144,28 @@ void check_heading(float heading) //using RPS
     //you will need to fill out this one yourself and take into account
     //the edge conditions (when you want the robot to go to 0 degrees
     //or close to 0 degrees)
-    while(RPS.Heading()< heading - 2 || RPS.Heading() > heading + 2)
+    while(RPS.Heading()< heading - 1 || RPS.Heading() > heading + 1)
     {
         Sleep(100);
         LCD.WriteLine(RPS.Heading());
+        if (heading == 0){
+            if(RPS.Heading()>180){
+               turn_left(50, 1);
+            }
+            else{
+                turn_right(50, 1);
+            }
+
+        }
+        else{
         if (RPS.Heading() < heading)
         {
             turn_left(50, 1);
         }
-        if (RPS.Heading() > 315 && heading == 0.)
-        {
-            turn_right(50,1);
-        }
         if (RPS.Heading() > heading)
         {
             turn_right(50, 1);
+        }
         }
     }
 }
@@ -167,7 +174,9 @@ int main(void)
 {
     LCD.Write("print");
     int motor_percent = 50; //Input power level here
-    int expected_counts = 275; //Input theoretical counts here
+     //Input theoretical counts here
+    float countsPerInch= 33.74084;
+    float offset= 2.7126;
     float initial_heading = RPS.Heading();
 
     //Initialize the screen (GO BUCKS!)
@@ -176,36 +185,37 @@ int main(void)
     RPS.InitializeMenu();
 
     LCD.WriteLine("Waiting for button to be pressed");
-   while(!buttons.middleButtonPressed());
-   while(buttons.middleButtonPressed());
+   while(!buttons.MiddlePressed());
+   while(buttons.MiddlePressed());
 
-    LCD.WriteLine("Waiting for light");
-    while(sensor.Value() > 0.5);
+    //LCD.WriteLine("Waiting for light");
+    //while(sensor.Value() > 0.5);
 
     Sleep(100);
-    move_forward(motor_percent, 283);
+    move_forward(motor_percent, (11-offset)*countsPerInch);
     Sleep(250);
-    //check_y_minus(18.599);
+    check_y_minus(18.599);
     Sleep(250);
-    //check_heading(180);
-    Sleep(250);
-
-    turn_left(motor_percent,250);
-    Sleep(250);
-   // check_heading(270);
+    check_heading(180);
     Sleep(250);
 
-    move_forward(motor_percent, 317);
+    turn_left(motor_percent,280);
     Sleep(250);
-    //check_x_plus(30.099);
-    Sleep(250);
-    //check_heading(270);
+    check_heading(270);
     Sleep(250);
 
-    turn_left(50, 250);
+    move_forward(motor_percent,(10.5-offset)*countsPerInch);
     Sleep(250);
-    //check_heading(0);
+    check_x_plus(30.099);
     Sleep(250);
+    check_heading(270);
+    Sleep(250);
+
+    turn_left(50, 280);
+    Sleep(250);
+    check_heading(0);
+    Sleep(250);
+
 
    // move_forward(motor_percent,63);
     Sleep(250);
