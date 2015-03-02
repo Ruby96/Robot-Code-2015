@@ -1,0 +1,110 @@
+    int redorder=RPS.RedButtonOrder(), blueorder=RPS.BlueButtonOrder(), whiteorder=RPS.WhiteButtonOrder();
+    if(redorder==1)
+    {
+        //move lift to red button
+        while(RPS.RedButtonPressed()!=0)
+        {
+            //move forward
+        }
+        //move backward
+        if(whiteorder==2)
+        {
+            //move lift to white buttton
+            while(RPS.WhiteButtonPressed()!=0)
+            {
+                //move forward into button
+            }
+            //move backward from button
+            //move lift to blue button
+            while(RPS.BlueButtonPressed()!=0)
+            {
+                //move forward into button
+            }
+            //move backward from button
+        }
+        else if(blueorder==2)
+        {
+            //move lift to blue button
+            while(RPS.BlueButtonPressed()!=0)
+            {
+                //move forward into button
+            }
+            //move backward from button
+            //move lift to white button
+            while(RPS.WhiteButtonPressed()!=0)
+            {
+                //move forward into button
+            }
+            //move backward from button
+        }
+    }
+    else if(whiteorder==1)
+    {
+        //move lift to white button
+        while(RPS.WhiteButtonPressed()!=0)
+        {
+            //move forward into button
+        }
+        //move backward from button
+        if(redorder==2)
+        {
+            //move lift to red button
+            while(RPS.RedButtonPressed()!=0)
+            {
+                //move forward
+            }
+            //move backward
+            while(RPS.BlueButtonPressed()!=0)
+            {
+                //move forward into button
+            }
+            //move backward from button
+        }
+        else if(blueorder==2)
+        {
+            while(RPS.BlueButtonPressed()!=0)
+            {
+                //move forward into button
+            }
+            //move backward from button
+            while(RPS.RedButtonPressed()!=0)
+            {
+                //move forward
+            }
+            //move backward
+        }
+    }
+    else if(blueorder==1)
+    {
+        while(RPS.BlueButtonPressed()!=0)
+        {
+            //move forward into button
+        }
+        //move backward from button
+        if(redorder==2)
+        {
+            while(RPS.RedButtonPressed()!=0)
+            {
+                //move forward
+            }
+            //move backward
+            while(RPS.WhiteButtonPressed()!=0)
+            {
+                //move forward into button
+            }
+            //move backward from button
+        }
+        else if(whiteorder==2)
+        {
+            while(RPS.WhiteButtonPressed()!=0)
+            {
+                //move forward into button
+            }
+            //move backward from button
+            while(RPS.RedButtonPressed()!=0)
+            {
+                //move forward
+            }
+            //move backward
+        }
+    }
