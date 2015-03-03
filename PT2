@@ -3,6 +3,7 @@
 #include <FEHUtility.h>
 #include <FEHMotor.h>
 #include <FEHRPS.h>
+#include <FEHServo.h>
 
 //Declarations for encoders & motors
 ButtonBoard buttons(FEHIO::Bank3);
