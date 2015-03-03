@@ -12,7 +12,7 @@ DigitalEncoder left_encoder(FEHIO::P0_7);
 AnalogInputPin sensor(FEHIO::P1_0);
 FEHMotor right_motor(FEHMotor::Motor0);
 FEHMotor left_motor(FEHMotor::Motor1);
-
+FEHServo lift(FEHServo::Servo0);
 
 void move_forward(int percent, int counts) //using encoders
 {
