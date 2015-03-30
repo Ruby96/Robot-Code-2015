@@ -1,87 +1,87 @@
     int redorder=RPS.RedButtonOrder(), blueorder=RPS.BlueButtonOrder(), whiteorder=RPS.WhiteButtonOrder();
     if(redorder==1)
     {
-        //move lift to red button height
-        //move into button
+        pulley.SetDegree(115); //move lift to red button height
+        move_forward(50, 50); //move into button
         //move away from button
         check_buttons(RPS.RedButtonPressed(),redorder);
         if(whiteorder==2)
         {
-            //move lift to white buttton
-            //move forward into button
+            pulley.SetDegree(65); //move lift to white buttton
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.WhiteButtonPressed(),whiteorder);
-            //move lift to blue button
-            //move forward into button
+            pulley.SetDegree(40) //move lift to blue button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.BlueButtonPressed(),blueorder);
         }
         else if(blueorder==2)
         {
-            //move lift to blue button
-            //move forward into button
+            pulley.SetDegree(40) //move lift to blue button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.BlueButtonPressed(),blueorder);
-            //move lift to white button
-            //move forward into button
+            pulley.SetDegree(65); //move lift to white button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.WhiteButtonPressed(),whiteorder);
         }
     }
     else if(whiteorder==1)
     {
-        //move lift to white button height
-        //move into button
+        pulley.SetDegree(65); //move lift to white button height
+        move_forward(50, 50); //move into button
         //move away from button
         check_buttons(RPS.WhiteButtonPressed(),whiteorder);
         if(redorder==2)
         {
-            //move lift to red buttton
-            //move forward into button
+            pulley.SetDegree(115);//move lift to red buttton
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.RedButtonPressed(),redorder);
-            //move lift to blue button
-            //move forward into button
+            pulley.SetDegree(40) //move lift to blue button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.BlueButtonPressed(),blueorder);
         }
         else if(blueorder==2)
         {
-            //move lift to blue button
-            //move forward into button
+            pulley.SetDegree(40) //move lift to blue button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.BlueButtonPressed(),blueorder);
-            //move lift to red button
-            //move forward into button
+            pulley.SetDegree(115); //move lift to red button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.RedButtonPressed(),redorder);
         }
     }
     else if(blueorder==1)
     {
-        //move lift to blue button height
-        //move into button
+        pulley.SetDegree(40) //move lift to blue button height
+        move_forward(50, 50); //move into button
         //move away from button
         check_buttons(RPS.BlueButtonPressed(),blueorder);
         if(redorder==2)
         {
-            //move lift to red buttton
-            //move forward into button
+            pulley.SetDegree(115); //move lift to red buttton
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.RedButtonPressed(),redorder);
-            //move lift to white button
-            //move forward into button
+            pulley.SetDegree(65); //move lift to white button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.WhiteButtonPressed(),whiteorder);
         }
         else if(whiteorder==2)
         {
-            //move lift to white button
-            //move forward into button
+            pulley.SetDegree(65); //move lift to white button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.WhiteButtonPressed(),whiteorder);
-            //move lift to red button
-            //move forward into button
+            pulley.SetDegree(115); //move lift to red button
+            move_forward(50, 50); //move forward into button
             //move backward from button
             check_buttons(RPS.RedButtonPressed(),redorder);
         }
