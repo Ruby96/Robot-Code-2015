@@ -7,12 +7,13 @@
 
 //Declarations for encoders & motors
 ButtonBoard buttons(FEHIO::Bank3);
-DigitalEncoder right_encoder(FEHIO::P0_6);
-DigitalEncoder left_encoder(FEHIO::P0_7);
-AnalogInputPin sensor(FEHIO::P1_0);
+DigitalEncoder right_encoder(FEHIO::P2_2);
+DigitalEncoder left_encoder(FEHIO::P2_3);
+AnalogInputPin sensor(FEHIO::P2_5);
 FEHMotor right_motor(FEHMotor::Motor0);
-FEHMotor left_motor(FEHMotor::Motor1);
-FEHServo servo(FEHServo::Servo7);
+FEHMotor left_motor(FEHMotor::Motor3);
+FEHServo crank(FEHServo::Servo0);
+FEHServo pulley(FEHServo::Servo7);
 
 void move_forward(int percent, int counts) //using encoders
 {
