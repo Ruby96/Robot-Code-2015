@@ -346,47 +346,41 @@ int main(void)
    int redorder=RPS.RedButtonOrder(), blueorder=RPS.BlueButtonOrder(), whiteorder=RPS.WhiteButtonOrder();
       if(redorder==1)
       {
-         pulley.SetDegree(180);//move lift to red button
-         Sleep(500);
-         right_motor.SetPercent(30);
-         left_motor.SetPercent(-30);
-         while(RPS.RedButtonPressed()==0)
-         {
-            startTime=TimeNow();
-            while(z-startTime < 3)
+        pulley.SetDegree(180);//move lift to red button
+        Sleep(500);
+        right_motor.SetPercent(30);
+        left_motor.SetPercent(-30);
+        startTime=TimeNow();
+        while(z-startTime < 3)
+        {
+            z=TimeNow();
+            if(RPS.RedButtonPressed==1)
             {
-               z=TimeNow();
-               if(RPS.RedButtonPressed==0)
-               {
-                  z=200;
-               }
+                z=200;
             }
             break;
-         }
-         right_motor.Stop();
-         left_motor.Stop();
-         move_backward(30,75);
-         Sleep(500);
-         if(whiteorder==2)
-         {
+        }
+        right_motor.Stop();
+        left_motor.Stop();
+        move_backward(30,75);
+        Sleep(500);
+        if(whiteorder==2)
+        {
             pulley.SetDegree(115);//move lift to red button
             Sleep(500);
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.WhiteButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;  
-                  }
-               }
-               break;
-         }  
+                }
+                break;
+            }
             right_motor.Stop();
             left_motor.Stop();
             move_backward(50,50);
@@ -397,18 +391,16 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.BlueButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+                break;
+            }
             right_motor.Stop();
             left_motor.Stop();
             move_backward(30,75);
@@ -423,18 +415,16 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.BlueButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+                break;
+            }
             right_motor.Stop();
             left_motor.Stop();
             move_backward(30,75);
@@ -445,18 +435,16 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.WhiteButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+                break;
+            }
             right_motor.Stop();
             left_motor.Stop();
             move_backward(30,75);
@@ -466,45 +454,40 @@ int main(void)
       }
       else if(whiteorder==1)
       {
-         pulley.SetDegree(115);//move lift to red button
-         Sleep(500);
-         right_motor.SetPercent(30);
-         left_motor.SetPercent(-30);
-         while(RPS.WhiteButtonPressed()==0)
-         {
-            startTime=TimeNow();
-            while(z-startTime < 3)
+        pulley.SetDegree(115);//move lift to red button
+        Sleep(500);
+        right_motor.SetPercent(30);
+        left_motor.SetPercent(-30);
+        startTime=TimeNow();
+        while(z-startTime < 3)
+        {
+            z=TimeNow();
+            if(RPS.RedButtonPressed==1)
             {
-               z=TimeNow();
-               if(RPS.RedButtonPressed==0)
-               {
-                    z=200;
-               }
+                z=200;
             }
             break;
-         }
-         right_motor.Stop();
-         left_motor.Stop();
-         move_backward(30,75);
-         Sleep(500);
-         if(redorder==2)
-         {
+        }
+        }
+        right_motor.Stop();
+        left_motor.Stop();
+        move_backward(30,75);
+        Sleep(500);
+        if(redorder==2)
+        {
             pulley.SetDegree(180);//move lift to red button
             Sleep(500);
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.RedButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
+                }
                break;
             }
             right_motor.Stop();
@@ -517,18 +500,15 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.BlueButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+                break;
             }
             right_motor.Stop();
             left_motor.Stop();
@@ -544,17 +524,14 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.BlueButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
+                }
                break;
             }
             right_motor.Stop();
@@ -567,18 +544,15 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.RedButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+                break;
             }
             right_motor.Stop();
             left_motor.Stop();
@@ -589,46 +563,40 @@ int main(void)
       }
       else if(blueorder==1)
       {
-         pulley.SetDegree(70);//move lift to red button
-         Sleep(500);
-         right_motor.SetPercent(30);
-         left_motor.SetPercent(-30);
-         while(RPS.BlueButtonPressed()==0)
-         {
-            startTime=TimeNow();
-            while(z-startTime < 3)
+        pulley.SetDegree(70);//move lift to red button
+        Sleep(500);
+        right_motor.SetPercent(30);
+        left_motor.SetPercent(-30);
+        startTime=TimeNow();
+        while(z-startTime < 3)
+        {
+            z=TimeNow();
+            if(RPS.RedButtonPressed==1)
             {
-               z=TimeNow();
-               if(RPS.RedButtonPressed==0)
-               {
                 z=200;
-               }
             }
-            break;
-         }
-         right_motor.Stop();
-         left_motor.Stop();
-         move_backward(30,75);
-         Sleep(500);
-         if(redorder==2)
-         {
+        break;
+        }
+        right_motor.Stop();
+        left_motor.Stop();
+        move_backward(30,75);
+        Sleep(500);
+        if(redorder==2)
+        {
             pulley.SetDegree(180);//move lift to red button
             Sleep(500);
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.RedButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+            break;
             }
             right_motor.Stop();
             left_motor.Stop();
@@ -640,18 +608,15 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.WhiteButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+                break;
             }
             right_motor.Stop();
             left_motor.Stop();
@@ -667,18 +632,15 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.WhiteButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+                break;
             }
             right_motor.Stop();
             left_motor.Stop();
@@ -690,18 +652,15 @@ int main(void)
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
             z=0;
-            while(RPS.RedButtonPressed()==0)
+            startTime=TimeNow();
+            while(z-startTime < 3)
             {
-               startTime=TimeNow();
-               while(z-startTime < 3)
-               {
-                  z=TimeNow();
-                  if(RPS.RedButtonPressed==0)
-                  {
+                z=TimeNow();
+                if(RPS.RedButtonPressed==1)
+                {
                     z=200;
-                  }
-               }
-               break;
+                }
+                break;
             }
             right_motor.Stop();
             left_motor.Stop();
