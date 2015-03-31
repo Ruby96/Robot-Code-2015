@@ -358,7 +358,7 @@ int main(void)
                z=TimeNow();
                if(RPS.RedButtonPressed==0)
                {
-                  z=10;
+                  z=200;
                }
             }
             break;
@@ -382,7 +382,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;  
                   }
                }
                break;
@@ -405,7 +405,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -431,7 +431,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -453,7 +453,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -478,7 +478,7 @@ int main(void)
                z=TimeNow();
                if(RPS.RedButtonPressed==0)
                {
-                  z=10;
+                    z=200;
                }
             }
             break;
@@ -502,7 +502,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -525,7 +525,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -552,7 +552,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -575,7 +575,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -601,7 +601,7 @@ int main(void)
                z=TimeNow();
                if(RPS.RedButtonPressed==0)
                {
-                  z=10;
+                z=200;
                }
             }
             break;
@@ -625,7 +625,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -648,7 +648,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -675,7 +675,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
@@ -698,7 +698,7 @@ int main(void)
                   z=TimeNow();
                   if(RPS.RedButtonPressed==0)
                   {
-                     z=10;
+                    z=200;
                   }
                }
                break;
