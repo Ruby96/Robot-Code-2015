@@ -23,7 +23,7 @@ void accel_forward(int percent, int counts) //using encoders
     right_encoder.ResetCounts();
     left_encoder.ResetCounts();
     int i;
-    //Set both motors to desired percent
+    //Set both motors to desired percent incrementally
     for( i=5;i<=percent;i+=5){
     Sleep(25);
     right_motor.SetPercent(0.9*i);
@@ -79,7 +79,7 @@ void move_upramp(int percent) //using encoders
     while((left_encoder.Counts() + right_encoder.Counts()) / 2. < (12)*countsPerInch );
 
 
-    //Turn off motors
+    //Turn off motors in decrements
     for(int i=percent;i>=0;i-=2){
     Sleep(40);
     right_motor.SetPercent(i);
@@ -115,7 +115,6 @@ void turn_right(int percent, int counts) //using encoders
     left_encoder.ResetCounts();
 
     //Set both motors to desired percent
-    //hint: set right motor backwards, left motor forwards
     right_motor.SetPercent(-1*(percent));
     left_motor.SetPercent(-1*(percent));
 
@@ -232,7 +231,7 @@ void check_x_plus(float x_coordinate) //using RPS while robot is in the +x direc
     //check whether the robot is within an acceptable range
     while(RPS.X() < x_coordinate - 1 || RPS.X() > x_coordinate + 1)
     {
-         Sleep(50);
+        Sleep(50);
         LCD.WriteLine(RPS.X());
         if(RPS.X() > x_coordinate)
         {
@@ -252,7 +251,7 @@ void check_x_minus(float x_coordinate) //using RPS while robot is in the +x dire
     //check whether the robot is within an acceptable range
     while(RPS.X() < x_coordinate - 1 || RPS.X() > x_coordinate + 1)
     {
-         Sleep(50);
+        Sleep(50);
         LCD.WriteLine(RPS.X());
         if(RPS.X() > x_coordinate)
         {
@@ -274,19 +273,16 @@ void check_y_minus(float y_coordinate) //using RPS while robot is in the -y dire
 
     {
         Sleep(100);
-
         LCD.WriteLine(RPS.Y());
         if(RPS.Y() > y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             check_forward(50,1);
-            //<ADD CODE HERE>
         }
         else if(RPS.Y() < y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             check_backward(50,1);
-            //<ADD CODE HERE>
         }
     }
 }
@@ -302,26 +298,19 @@ void check_y_plus(float y_coordinate) //using RPS while robot is in the +y direc
         {
             //pulse the motors for a short duration in the correct direction
             check_backward(50,1);
-            //<ADD CODE HERE>
         }
         else if(RPS.Y() < y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             check_forward(50,1);
-            //<ADD CODE HERE>
         }
     }
 }
 
 void check_heading(float heading) //using RPS
 {
-    //you will need to fill out this one yourself and take into account
-    //the edge conditions (when you want the robot to go to 0 degrees
-    //or close to 0 degrees)
-
-
-    if (heading == 0){
-
+    if (heading == 0)
+    {
         while(!(RPS.Heading()>=359) && !(RPS.Heading()<=1))
         {
             LCD.WriteLine(RPS.Heading());
@@ -336,33 +325,28 @@ void check_heading(float heading) //using RPS
         }
     }
 
-
-
-
-    else{
-    while(RPS.Heading()< heading - 1 || RPS.Heading() > heading + 1)
+    else
     {
-
-        LCD.WriteLine(RPS.Heading());
-
-
-
-        if (RPS.Heading() < heading)
+        while(RPS.Heading()< heading - 1 || RPS.Heading() > heading + 1)
         {
-            check_left(100, 1);
-            Sleep(50);
-        }
-        if (RPS.Heading() > heading)
-        {
-            check_right(100, 1);
-            Sleep(50);
-        }
+
+            LCD.WriteLine(RPS.Heading());
+            if (RPS.Heading() < heading)
+            {
+                check_left(100, 1);
+                Sleep(50);
+            }
+            if (RPS.Heading() > heading)
+            {
+                check_right(100, 1);
+                Sleep(50);
+            }
         }
     }
  }
 
-void rotate_crank(){
-
+void rotate_crank()
+{
     move_backward(30,300);
     check_y_minus(54.3);
     Sleep(250);
@@ -371,17 +355,18 @@ void rotate_crank(){
     LCD.WriteLine(color);
     if(color<.669)
     {
+        //set servo to zero, rotating 180 degrees
         LCD.WriteLine("Light is Red");
         crank.SetDegree(0);
         Sleep(1000);
         move_backward(40,60);
         Sleep(500);
-        move_forward(30,5);
+        move_forward(30,5);         //ensure chassis doesn't interfere with wheel turning
         Sleep(1000);
         crank.SetDegree(180);
         Sleep(1000);
 
-        move_forward(30,45);
+        move_forward(30,45);        //move forward, reset servo, repeat
         Sleep(1000);
         crank.SetDegree(0);
         Sleep(1000);
@@ -392,7 +377,7 @@ void rotate_crank(){
         crank.SetDegree(180);        
         Sleep(1000);
 
-        move_forward(30,45);
+        move_forward(30,45);        //3rd loop
         Sleep(1000);
         crank.SetDegree(0);
         Sleep(1000);
@@ -410,12 +395,12 @@ void rotate_crank(){
         Sleep(1000);
         move_backward(40,60);
         Sleep(500);
-        move_forward(30,5);
+        move_forward(30,5);         //ensure chassis doesn't interfere with wheel turning
         Sleep(1000);
         crank.SetDegree(0);
         Sleep(1000);
 
-        move_forward(30,45);
+        move_forward(30,45);        //move forward, reset servo, repeat
         Sleep(1000);
         crank.SetDegree(180);
         Sleep(1000);
@@ -426,7 +411,7 @@ void rotate_crank(){
         crank.SetDegree(0);
         Sleep(1000);
 
-        move_forward(30,45);
+        move_forward(30,45);        //3rd loop
         Sleep(1000);
         crank.SetDegree(180);
         Sleep(1000);
@@ -443,12 +428,13 @@ void rotate_crank(){
 
 void push_buttons()
 {
+    //declare constants for button order and starting time for time outs
     int redorder=RPS.RedButtonOrder(), blueorder=RPS.BlueButtonOrder(), whiteorder=RPS.WhiteButtonOrder();
     double startTime;
     int z;
           if(redorder==1)
           {
-            pulley.SetDegree(180);//move lift to red button
+            pulley.SetDegree(180);      //move lift to red button
             Sleep(500);
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
@@ -456,7 +442,7 @@ void push_buttons()
             while(z-startTime < 3)
             {
                 z=TimeNow();
-                if(RPS.RedButtonPressed()==1)
+                if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                 {
                     z=200;
                 }
@@ -468,7 +454,7 @@ void push_buttons()
             Sleep(500);
             if(whiteorder==2)
             {
-                pulley.SetDegree(115);//move lift to red button
+                pulley.SetDegree(115);      //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -477,7 +463,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -488,7 +474,7 @@ void push_buttons()
                 move_backward(50,50);
                 Sleep(500);
 
-                pulley.SetDegree(70);//move lift to red button
+                pulley.SetDegree(70);       //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -497,7 +483,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -512,7 +498,7 @@ void push_buttons()
              }
              else if(blueorder==2)
              {
-                pulley.SetDegree(70);//move lift to red button
+                pulley.SetDegree(70);       //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -521,7 +507,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -532,7 +518,7 @@ void push_buttons()
                 move_backward(30,75);
                 Sleep(500);
 
-                pulley.SetDegree(115);//move lift to red button
+                pulley.SetDegree(115);      //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -541,7 +527,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -556,7 +542,7 @@ void push_buttons()
           }
           else if(whiteorder==1)
           {
-            pulley.SetDegree(115);//move lift to red button
+            pulley.SetDegree(115);      //move lift to red button
             Sleep(500);
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
@@ -564,7 +550,7 @@ void push_buttons()
             while(z-startTime < 3)
             {
                 z=TimeNow();
-                if(RPS.RedButtonPressed()==1)
+                if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                 {
                     z=200;
                 }
@@ -577,7 +563,7 @@ void push_buttons()
             Sleep(500);
             if(redorder==2)
             {
-                pulley.SetDegree(180);//move lift to red button
+                pulley.SetDegree(180);      //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -586,7 +572,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -597,7 +583,7 @@ void push_buttons()
                 move_backward(30,75);
                 Sleep(500);
 
-                pulley.SetDegree(70);//move lift to red button
+                pulley.SetDegree(70);       //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -606,7 +592,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -621,7 +607,7 @@ void push_buttons()
              }
              else if(blueorder==2)
              {
-                pulley.SetDegree(70);//move lift to red button
+                pulley.SetDegree(70);       //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -630,7 +616,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -641,7 +627,7 @@ void push_buttons()
                 move_backward(30,75);
                 Sleep(500);
 
-                pulley.SetDegree(180);//move lift to red button
+                pulley.SetDegree(180);      //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -650,7 +636,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -665,7 +651,7 @@ void push_buttons()
 
           else if(blueorder==1)
           {
-            pulley.SetDegree(70);//move lift to red button
+            pulley.SetDegree(70);       //move lift to red button
             Sleep(500);
             right_motor.SetPercent(30);
             left_motor.SetPercent(-30);
@@ -673,7 +659,7 @@ void push_buttons()
             while(z-startTime < 3)
             {
                 z=TimeNow();
-                if(RPS.RedButtonPressed()==1)
+                if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                 {
                     z=200;
                 }
@@ -685,7 +671,7 @@ void push_buttons()
             Sleep(500);
             if(redorder==2)
             {
-                pulley.SetDegree(180);//move lift to red button
+                pulley.SetDegree(180);      //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -694,7 +680,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -705,7 +691,7 @@ void push_buttons()
                 move_backward(30,75);
                 Sleep(500);
 
-                pulley.SetDegree(115);//move lift to red button
+                pulley.SetDegree(115);      //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -714,7 +700,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -729,7 +715,7 @@ void push_buttons()
              }
              else if(whiteorder==2)
              {
-                pulley.SetDegree(115);//move lift to red button
+                pulley.SetDegree(115);      //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -738,7 +724,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -749,7 +735,7 @@ void push_buttons()
                 move_backward(30,75);
                 Sleep(500);
 
-                pulley.SetDegree(180);//move lift to red button
+                pulley.SetDegree(180);      //move lift to red button
                 Sleep(500);
                 right_motor.SetPercent(30);
                 left_motor.SetPercent(-30);
@@ -758,7 +744,7 @@ void push_buttons()
                 while(z-startTime < 3)
                 {
                     z=TimeNow();
-                    if(RPS.RedButtonPressed()==1)
+                    if(RPS.RedButtonPressed()==1)   //stop loop and move to next button
                     {
                         z=200;
                     }
@@ -779,20 +765,21 @@ int main(void)
     //Initialize the screen (GO BUCKS!)
     LCD.Clear( FEHLCD::Black );
     LCD.SetFontColor( FEHLCD::Green );
-   RPS.InitializeMenu();
-    crank.SetMin(687);
+    RPS.InitializeMenu();       //start RPS for position checks and objectives
+    crank.SetMin(687);          //set back arm start position
     crank.SetMax(2311);
-    crank.SetDegree(90);
-    pulley.SetMin(775);
+    crank.SetDegree(90);        
+    pulley.SetMin(775);         //set lift position to height to pick up salt bag
     pulley.SetMax(1776);
     pulley.SetDegree(10);
-    int countsPerInch=33.7;    
-    while(!buttons.MiddlePressed());
+    int countsPerInch=33.7;    //declare motor counts per inch
+    while(!buttons.MiddlePressed());    //final button press loop
     while(buttons.MiddlePressed());
     double startTime= TimeNow();
     LCD.WriteLine("Waiting for light");
-    while(sensor.Value() > 0.5 && TimeNow()-startTime< 30);
+    while(sensor.Value() > 0.5 && TimeNow()-startTime< 30);     //loop to start after 30 seconds if light isn't found
 
+    //movement from start forward
     Sleep(100);
     move_forward(50, 725);
     check_heading(180);
@@ -800,17 +787,19 @@ int main(void)
     check_y_minus(3.3);
     Sleep(250);
 
-
+    //turn to face salt bag
     turn_left(50,100);
     Sleep(250);
     check_heading(250);
     Sleep(250);
 
+    //go to salt bag and pick up
     move_forward(75,(17)*countsPerInch);
     Sleep(750);
     pulley.SetDegree(180);
     Sleep(250);
-
+    
+    //movement from salt bag to ramp
     Sleep(250);
     move_backward(30, (6)*countsPerInch);
     Sleep(250);
@@ -823,102 +812,97 @@ int main(void)
 
     move_forward(40,(14)*countsPerInch);
     Sleep(250);
-    //CHECK_MAYBE?
 
     turn_left(40, 50);
     Sleep(250);
     check_heading(0);
     Sleep(1000);
 
-
+    //movement up ramp
     move_upramp(70);
     check_heading(0);
-
-
-
     check_y_plus(55.5);
-
+    
+    //alignment for wheel
     turn_left(50,350);
     check_heading(140);
-
     move_backward(30,150);
     check_x_minus(29.8);
-
     turn_left(20,100);
     check_heading(180);
     crank.SetDegree(0);
     move_forward(50, 150);
-
     check_heading(180);
+    
+    //turn wheel function
     rotate_crank();
 
-
-
-
-
+    //movement from wheel to garage
     move_forward(50,150);
     check_y_minus(47.8);
     Sleep(250);
-
     turn_right(50,150);
     Sleep(250);
     check_heading(90);
     Sleep(250);
-
     move_forward(50,(14)*countsPerInch);
     Sleep(250);
     check_x_minus(7.9);
     Sleep(250);
 
+    //align with garage
     turn_right(50,100);
     Sleep(250);
     check_heading(50);
     Sleep(250);
 
-    move_forward(100,(6)*countsPerInch);
+    //deposit salt bag
+    move_forward(100,(6)*countsPerInch);    //ram into garage, salt bag momentum puts it off lift
     Sleep(250);
+    
+    //movement away from garage to buttons
     move_backward(50,(8)*countsPerInch);
     Sleep(250);
+    turn_right(50,200);
+    check_heading(320);
+    move_forward(30,(7)*countsPerInch);
+    turn_left(50,150);
+    check_heading(50);
+    
+    //push buttons
+    push_buttons();
 
-  turn_right(50,200);
-  check_heading(320);
+    /* move_backward(30,(8)*countsPerInch);
+    pulley.SetDegree(180);
 
-  move_forward(30,(7)*countsPerInch);
-  turn_left(50,150);
-  check_heading(50);
-  push_buttons();
+    turn_left(50,200);
+    Sleep(250);
+    check_heading(90);
+    Sleep(250);
 
- /* move_backward(30,(8)*countsPerInch);
-pulley.SetDegree(180);
+    move_forward(50,(2)*countsPerInch);
+    Sleep(250);
+    check_x_minus(3.7);
+    Sleep(250);
 
-turn_left(50,200);
-Sleep(250);
-check_heading(90);
-Sleep(250);
+    turn_left(50,430);
+    Sleep(250);
+    check_heading(180);
+    Sleep(250);
 
-move_forward(50,(2)*countsPerInch);
-Sleep(250);
-check_x_minus(3.7);
-Sleep(250);
+    move_forward(50,(35)*countsPerInch);
+    Sleep(250);
+    check_y_minus(21);
+    Sleep(250);
 
-turn_left(50,430);
-Sleep(250);
-check_heading(180);
-Sleep(250);
+    turn_left(50,30);
+    Sleep(250);
+    crank.SetDegree(25);
+    check_heading(200);
+    Sleep(250);
 
-move_forward(50,(35)*countsPerInch);
-Sleep(250);
-check_y_minus(21);
-Sleep(250);
-
-turn_left(50,30);
-Sleep(250);
-crank.SetDegree(25);
-check_heading(200);
-Sleep(250);
-
-move_forward(50,(10)*countsPerInch);
-Sleep(250);
-//check_y_minus(18);
-Sleep(250);*/
+    move_forward(50,(10)*countsPerInch);
+    Sleep(250);
+    //check_y_minus(18);
+    Sleep(250);*/
 }
