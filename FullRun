@@ -291,13 +291,11 @@ void check_y_minus(float y_coordinate) //using RPS while robot is in the -y dire
         {
             //pulse the motors for a short duration in the correct direction
             check_forward(50,1);
-            //<ADD CODE HERE>
         }
         else if(RPS.Y() < y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             check_backward(50,1);
-            //<ADD CODE HERE>
         }
     }
 }
@@ -313,13 +311,11 @@ void check_y_plus(float y_coordinate) //using RPS while robot is in the +y direc
         {
             //pulse the motors for a short duration in the correct direction
             check_backward(50,1);
-            //<ADD CODE HERE>
         }
         else if(RPS.Y() < y_coordinate)
         {
             //pulse the motors for a short duration in the correct direction
             check_forward(50,1);
-            //<ADD CODE HERE>
         }
     }
 }
@@ -334,26 +330,17 @@ void check_diagonal(float x_coordinate, float y_coordinate ) //using RPS while r
         LCD.WriteLine(RPS.Y());
         if((RPS.Y()/RPS.X()) > tangent)
         {
-            //pulse the motors for a short duration in the correct direction
             check_backward(50,1);
-            //<ADD CODE HERE>
         }
         else if((RPS.Y()/RPS.X()) < tangent)
         {
-            //pulse the motors for a short duration in the correct direction
             check_forward(50,1);
-            //<ADD CODE HERE>
         }
     }
 }
 
 void check_heading(float heading) //using RPS
 {
-    //you will need to fill out this one yourself and take into account
-    //the edge conditions (when you want the robot to go to 0 degrees
-    //or close to 0 degrees)
-
-
     if (heading == 0){
 
         while(!(RPS.Heading()>=359) && !(RPS.Heading()<=1))
@@ -752,171 +739,138 @@ int countsPerInch=33.7;
 int main(void)
 {
 
-    //Initialize the screen (GO BUCKS!)
+//Initialize the screen (GO BUCKS!)
     LCD.Clear( FEHLCD::Black );
     LCD.SetFontColor( FEHLCD::Green );
-    RPS.InitializeMenu();
-    crank.SetMin(687);
+    RPS.InitializeMenu();       //start RPS for position checks and objectives
+    crank.SetMin(687);          //set back arm start position
     crank.SetMax(2311);
-    crank.SetDegree(90);
-    pulley.SetMin(775);
+    crank.SetDegree(90);        
+    pulley.SetMin(775);         //set lift position to height to pick up salt bag
     pulley.SetMax(1776);
     pulley.SetDegree(10);
-    int countsPerInch=33.7;
-
-    while(!buttons.MiddlePressed());
+    int countsPerInch=33.7;    //declare motor counts per inch
+    while(!buttons.MiddlePressed());    //final button press loop
     while(buttons.MiddlePressed());
-
     double startTime= TimeNow();
     LCD.WriteLine("Waiting for light");
-    while(sensor.Value() > 0.5 && TimeNow()-startTime< 30);
+    while(sensor.Value() > 0.5 && TimeNow()-startTime< 30);     //loop to start after 30 seconds if light isn't found
 
+    //movement from start forward
     Sleep(100);
-    move_forward(50, 725,0);
+    move_forward(50, 725);
     check_heading(180);
     Sleep(250);
-    check_y_minus(4);
-Sleep(250);
+    check_y_minus(3.3);
+    Sleep(250);
 
-
+    //turn to face salt bag
     turn_left(50,100);
-Sleep(250);
-    check_heading(251);
-Sleep(250);
-move_backward(20,50,0);
+    Sleep(250);
+    check_heading(250);
+    Sleep(250);
 
-    move_forward(85,(17)*countsPerInch,5);
+    //go to salt bag and pick up
+    move_forward(75,(17)*countsPerInch);
     Sleep(750);
-
     pulley.SetDegree(180);
+    Sleep(250);
+    
+    //movement from salt bag to ramp
+    Sleep(250);
+    move_backward(30, (6)*countsPerInch);
+    Sleep(250);
+    pulley.SetDegree(90);
 
+    turn_left(40, 100);
+    Sleep(250);
+    check_heading(315);
+    Sleep(250);
 
-    move_backward(30, (7)*countsPerInch,0);
-    Sleep(100);
-    pulley.SetDegree(80);
-
-    turn_left(25, 100);
-
-    check_heading(300);
-
-
-    move_forward(40,(14)*countsPerInch,5);
-
-    //CHECK_MAYBE?
-turn_right(20,10);
-move_backward(20,15,0);
+    move_forward(40,(14)*countsPerInch);
+    Sleep(250);
 
     turn_left(40, 50);
     Sleep(250);
     check_heading(0);
+    Sleep(1000);
 
-
-while(RPS.Y()<40){
-    Sleep(250);
+    //movement up ramp
     move_upramp(70);
     check_heading(0);
-}
-
-if(RPS.Y()<49){
-        move_forward(50,175,0);
-}
-
     check_y_plus(55.5);
-
+    
+    //alignment for wheel
     turn_left(50,350);
     check_heading(140);
-
-
-    move_backward(30,150,0);
+    move_backward(30,150);
     check_x_minus(29.8);
-
-
     turn_left(20,100);
-    check_heading(181);
-    pulley.SetDegree(0);
-    crank.SetDegree(0);
-    move_forward(50, 150,0);
-    Sleep(200);
     check_heading(180);
-    Sleep(200);
+    crank.SetDegree(0);
+    move_forward(50, 150);
+    check_heading(180);
+    
+    //turn wheel function
     rotate_crank();
 
-    move_forward(50,180,0);
-    Sleep(100);
-    pulley.SetDegree(90);
-    check_y_minus(47.5);
-    crank.SetDegree(90);
-
+    //movement from wheel to garage
+    move_forward(50,150);
+    check_y_minus(47.8);
+    Sleep(250);
     turn_right(50,150);
-
+    Sleep(250);
     check_heading(90);
+    Sleep(250);
+    move_forward(50,(14)*countsPerInch);
+    Sleep(250);
+    check_x_minus(7.9);
+    Sleep(250);
 
-
-    move_forward(20,(25)*countsPerInch,7);
-
-
-    move_backward(50,125,0);
-
-    check_x_minus(7);
-
-
-    turn_right(50,75);
-
+    //align with garage
+    turn_right(50,100);
+    Sleep(250);
     check_heading(50);
-    pulley.SetDegree(40);
     Sleep(250);
-    move_forward(100,(6)*countsPerInch,5);
+
+    //deposit salt bag
+    move_forward(100,(6)*countsPerInch);    //ram into garage, salt bag momentum puts it off lift
     Sleep(250);
-    move_backward(50,(7)*countsPerInch,0);
-    pulley.SetDegree(180);
-
-
-    turn_right(50,180);
-
+    
+    //movement away from garage to buttons
+    move_backward(50,(8)*countsPerInch);
+    Sleep(250);
+    turn_right(50,200);
     check_heading(320);
-
-
-    move_forward(30,(8.5)*countsPerInch,0);
-    check_x_plus(22);
+    move_forward(30,(7)*countsPerInch);
     turn_left(50,150);
-
-
-    check_heading(45);
-
-
+    check_heading(50);
+    
+    //push buttons
     push_buttons();
 
+    //movement to rough incline
     move_backward(30,(1)*countsPerInch,5);
     pulley.SetDegree(180);
-
     check_x_minus(14.4);
-
     turn_left(50,150);
-
     check_heading(136);
-
-
     move_forward(50,(12)*countsPerInch,5);
-
     check_x_minus(3.3);
-
-
     turn_left(50,30);
-
     check_heading(180);
 
-
+    //movement down ramp
     move_forward(50,(35)*countsPerInch,0);
     Sleep(100);
 
+    //correction at bottom of ramp
     check_heading(180);
     Sleep(250);
-
     Sleep(100);
     check_y_minus(16.6);
 
-
-   actuate_lever();
-   LCD.WriteLine("If you are reading this, it means we won. I'm so proud of you. Peace and Love");
+    //movement to and triggering of lever
+    actuate_lever();
+    LCD.WriteLine("If you are reading this, it means we won. I'm so proud of you. Peace and Love");
 }
-
